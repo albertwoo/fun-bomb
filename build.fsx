@@ -7,14 +7,24 @@ let connections = [5;10;20]
 
 pipeline "bomb" {
     description "start server and test bomb"
-    stage "build server" {
+    stage "build axum server" {
         workingDir "hello-axum"
+        run "cargo build -r"
+    }
+    stage "build actix server" {
+        workingDir "hello-actix"
         run "cargo build -r"
     }
     stage "start bomb" {
         paralle
-        stage "run server" {
+        stage "run axum server" {
+            whenCmdArg "--axum"
             workingDir "hello-axum"
+            run "cargo run -r"
+        }
+        stage "run actix server" {
+            whenNot { cmdArg "--axum" }
+            workingDir "hello-actix"
             run "cargo run -r"
         }
         stage "run load tools" {
