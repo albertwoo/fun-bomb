@@ -6,7 +6,7 @@ let round = 5
 let connections = [5;10;20]
 
 pipeline "bomb" {
-    description "start server and test bomb"
+    description "start server (actix-web by default) and test bomb"
     stage "build axum server" {
         workingDir "hello-axum"
         run "cargo build -r"
@@ -15,15 +15,24 @@ pipeline "bomb" {
         workingDir "hello-actix"
         run "cargo build -r"
     }
+    stage "build csharp server" {
+        workingDir "hello-csharp"
+        run "dotnet build -c Release"
+    }
     stage "start bomb" {
         paralle
         stage "run axum server" {
-            whenCmdArg "--axum"
+            whenCmdArg "--axum" "" "use axum as the backend server"
             workingDir "hello-axum"
             run "cargo run -r"
         }
+        stage "run csharp server" {
+            whenCmdArg "--csharp" "" "use asp.net core as the backend server"
+            workingDir "hello-csharp"
+            run "dotnet run -c Release"
+        }
         stage "run actix server" {
-            whenNot { cmdArg "--axum" }
+            whenNot { cmdArg "--axum"; cmdArg "--csharp";  }
             workingDir "hello-actix"
             run "cargo run -r"
         }
