@@ -6,7 +6,16 @@ rust 学习记 - 创建一个简单的 http 压测命令行
 - dotnet sdk 7
 - rust
 
-运行一下命令以获取结果
+```bash
+查看可用测试参数
+dotnet fsi .\build.fsx -- -h
+
+Options(collected from stages):
+  --axum                          use axum as the backend server
+  --csharp                        use asp.net core as the backend server
+```
+
+运行一下命令以可获取结果
 
 ```bash
 dotnet fsi ./build.fsx
@@ -15,9 +24,7 @@ dotnet fsi ./build.fsx
 ### actix-web 为服务端
 
 
-#### tested with relativly high power device
-
-> 12th Gen Intel(R) Core(TM) i7-12700H   2.30 GHz   32.0 GB Windows11
+> 12th Gen Intel(R) Core(TM) i7-12700H   2.30 GHz   32.0 GB Windows11 WSL ubuntu 20
 
 |rust|csharp|
 |----|------|
@@ -84,7 +91,7 @@ dotnet fsi ./build.fsx
 |Actual time 10.00s, RPS 304571/s|Actual time 10.00s, RPS 348164/s.|
 |Actual time 10.00s, RPS 338826/s|Actual time 10.01s, RPS 451372/s.|
 
-#### tested with low power device
+> Intel(R) Core(TM) i7-1065G7 CPU @ 1.30GHz   1.50 GHz  32GB Windows11
 
 |rust|csharp|
 |----|------|
