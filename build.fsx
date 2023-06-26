@@ -3,7 +3,7 @@
 open Fun.Build
 
 let round = 5
-let connections = [5;10;20]
+let connections = [10;20;30;50;70;100;200;300;500]
 
 pipeline "bomb" {
     description "start server (actix-web by default) and test bomb"
@@ -32,7 +32,7 @@ pipeline "bomb" {
             run "dotnet run -c Release"
         }
         stage "run actix server" {
-            whenNot { cmdArg "--axum"; cmdArg "--csharp";  }
+            whenNot { cmdArg "--axum"; cmdArg "--csharp" }
             workingDir "hello-actix"
             run "cargo run -r"
         }
@@ -68,6 +68,7 @@ pipeline "bomb" {
                             do! Async.Sleep 10_000
                 })
             }
+            run (fun _ -> raise (PipelineCancelledException "All bombing is finished, will cancel the pipeline."); ())
         }
     }
     runIfOnlySpecified false
